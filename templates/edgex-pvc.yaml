@@ -52,3 +52,17 @@ spec:
     requests:
       storage: 128Mi
 status: {}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: portainer-data
+spec:
+  storageClassName: edgex-portainer-data-volume
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 128Mi
+status: {}

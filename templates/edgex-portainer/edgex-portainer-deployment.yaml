@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    org.edgexfoundry.service: {{.Values.edgex.app.portainer}}
+  name: {{.Values.edgex.app.portainer}}
+spec:
+  replicas: {{.Values.edgex.replicas.portainer}}
+  selector:
+    matchLabels:
+      org.edgexfoundry.service: {{.Values.edgex.app.portainer}}
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        org.edgexfoundry.service: {{.Values.edgex.app.portainer}}
+    spec:
+      containers:
+      - name: {{.Values.edgex.app.portainer}}
+        image: {{.Values.edgex.image.portainer.repository}}:{{.Values.edgex.image.portainer.tag}}
+        imagePullPolicy: {{.Values.edgex.image.portainer.pullPolicy}}
+        ports:
+        - containerPort: 9000
+      {{- if .Values.edgex.resources.portainer.enforceLimits }}
+        resources:
+          limits:
+            memory: {{ .Values.edgex.resources.portainer.limits.memory }}
+            cpu: {{ .Values.edgex.resources.portainer.limits.cpu }}
+          requests:
+            memory: {{ .Values.edgex.resources.portainer.requests.memory }}
+            cpu: {{ .Values.edgex.resources.portainer.requests.cpu }}
+      {{- end}}
+        volumeMounts:
+        - mountPath: /data
+          name: portainer-data
+        - mountPath: /var/run/docker.sock
+          name: docker-sock
+      hostname: {{.Values.edgex.app.portainer}}
+      restartPolicy: Always
+      volumes:
+        - name: portainer-data
+          persistentVolumeClaim:
+            claimName: portainer-data
+        - name: docker-sock
+          hostPath:
+            path: /var/run/docker.sock
+status: {}

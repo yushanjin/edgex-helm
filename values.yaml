@@ -5,7 +5,7 @@
 # edgex defines a set of configuration properties for application-level concerns
 edgex:
   # Option value: ClusterIP/NodePort/LoadBalancer
-  serviceType: LoadBalancer
+  serviceType: NodePort
 
   # app defines a single point in naming/referring to an application. For each application, the value
   # define its label name, resource name or base of the resource name, and service name.
@@ -27,6 +27,7 @@ edgex:
     ui: edgex-ui
     system: edgex-sys-mgmt-agent
     redis: edgex-redis
+    portainer: edgex-portainer
 
   # image defines configuration properties for docker-image-level concerns
   image:
@@ -76,7 +77,8 @@ edgex:
         pullPolicy: IfNotPresent
     ui:
       repository: edgexfoundry/docker-edgex-ui-go
-      tag: 1.2.1
+      # tag: 1.2.1
+      tag: 1.0.0.cn
       pullPolicy: IfNotPresent
     system:
       repository: edgexfoundry/docker-sys-mgmt-agent-go
@@ -85,6 +87,10 @@ edgex:
     redis:
       repository: redis
       tag: 5.0.8-alpine
+      pullPolicy: IfNotPresent
+    portainer:
+      repository: portainer/portainer
+      tag: latest
       pullPolicy: IfNotPresent
 
   # replicas defines the number of replicas in a Deployment for the respective application
@@ -106,6 +112,7 @@ edgex:
     ui: 1
     system: 1
     redis: 1
+    portainer: 1
 
   # resources defines the cpu and memory limits and requests for the respective application
   resources:
@@ -210,6 +217,14 @@ edgex:
         cpu: 0.5
         memory: 256Mi
     redis:
+      enforceLimits: false
+      limits:
+        cpu: 1
+        memory: 512Mi
+      requests:
+        cpu: 0.5
+        memory: 256Mi
+    portainer:
       enforceLimits: false
       limits:
         cpu: 1

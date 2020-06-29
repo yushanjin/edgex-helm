@@ -9,11 +9,15 @@ spec:
   - name: "8400"
     port: 8400
     targetPort: 8400
+  {{- if eq .Values.edgex.serviceType "NodePort" }}
+    nodePort: 8400
+  {{- end}}
   - name: "8500"
     port: 8500
     targetPort: 8500
+  {{- if eq .Values.edgex.serviceType "NodePort" }}
+    nodePort: 8500
+  {{- end}}
   selector:
     org.edgexfoundry.service: {{.Values.edgex.app.core.consul}}
   type: {{.Values.edgex.serviceType}}
-status:
-  loadBalancer: {}

@@ -9,8 +9,9 @@ spec:
   - name: "48100"
     port: 48100
     targetPort: 48100
+  {{- if eq .Values.edgex.serviceType "NodePort" }}
+    nodePort: 48100
+  {{- end}}
   selector:
     org.edgexfoundry.service: {{.Values.edgex.app.appservice.rules}}
   type: {{.Values.edgex.serviceType}}
-status:
-  loadBalancer: {}
