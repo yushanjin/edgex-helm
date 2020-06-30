@@ -90,7 +90,7 @@ edgex:
       pullPolicy: IfNotPresent
     portainer:
       repository: portainer/portainer
-      tag: latest
+      tag: 1.24.0
       pullPolicy: IfNotPresent
 
   # replicas defines the number of replicas in a Deployment for the respective application
@@ -112,7 +112,6 @@ edgex:
     ui: 1
     system: 1
     redis: 1
-    portainer: 1
 
   # resources defines the cpu and memory limits and requests for the respective application
   resources:

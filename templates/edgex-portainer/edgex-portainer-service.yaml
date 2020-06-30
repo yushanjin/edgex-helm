@@ -9,9 +9,6 @@ spec:
   - name: "9000"
     port: 9000
     targetPort: 9000
-  {{- if eq .Values.edgex.serviceType "NodePort" }}
-    nodePort: 9000
-  {{- end}}
   selector:
     org.edgexfoundry.service: {{.Values.edgex.app.portainer}}
-  type: {{.Values.edgex.serviceType}}
+  type: ClusterIP

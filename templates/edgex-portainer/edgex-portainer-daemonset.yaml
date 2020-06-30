@@ -1,16 +1,17 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: DaemonSet
 metadata:
   labels:
     org.edgexfoundry.service: {{.Values.edgex.app.portainer}}
   name: {{.Values.edgex.app.portainer}}
 spec:
-  replicas: {{.Values.edgex.replicas.portainer}}
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: 1
+    type: RollingUpdate
   selector:
     matchLabels:
       org.edgexfoundry.service: {{.Values.edgex.app.portainer}}
-  strategy:
-    type: Recreate
   template:
     metadata:
       labels:
@@ -36,6 +37,8 @@ spec:
           name: portainer-data
         - mountPath: /var/run/docker.sock
           name: docker-sock
+      dnsPolicy: ClusterFirst
+      hostNetwork: true
       hostname: {{.Values.edgex.app.portainer}}
       restartPolicy: Always
       volumes:
@@ -45,4 +48,4 @@ spec:
         - name: docker-sock
           hostPath:
             path: /var/run/docker.sock
-status: {}
+
